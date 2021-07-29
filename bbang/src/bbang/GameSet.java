@@ -10,36 +10,8 @@ public class GameSet extends Thread {
 	String set[] = new String[4];
 	String answer;
 	int score = 0;
+	
 
-	public void Games() {
-
-		for (int i = 0; i < 4; i++) {
-			set[i] = word[(int) (Math.random() * word.length)];
-			System.out.println(set[i]);
-		}
-	}
-
-	public void GameRule() {
-		while (true) {
-			for (int i = 0; i < set.length; i++) {
-				answer = scan.next();
-				if (set[i].equals(answer)) {
-					score += 50;
-					System.out.println(score);
-				} else {
-					score -= 20;
-					System.out.println(score);
-				}
-
-			}
-
-		}
-	}
-
-	public void ControlGame() {
-		Games();
-		GameRule();
-	}
 
 	public static void main(String[] args) {
 		Games games = new Games();
