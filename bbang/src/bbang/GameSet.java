@@ -11,48 +11,41 @@ public class GameSet extends Thread {
 	String answer;
 	int score = 0;
 	
-
-
-	public static void main(String[] args) {
-		Games games = new Games();
-		GameRule gr = new GameRule();
-		games.start();
-		gr.start();
-
-	}
-}
-
-class Games extends GameSet {
-
+	@Override
 	public void run() {
+		// TODO Auto-generated method stub
 		try {
-			
 			for (int i = 0; i < 4; i++) {
 				sleep(1000);
 				set[i] = word[(int) (Math.random() * word.length)];
 				System.out.println(set[i]);
 			}
+			gameSet();
 		} catch (Exception e) {
+			// TODO: handle exception
 			e.printStackTrace();
 		}
 	}
-}
-
-class GameRule extends GameSet {
-
-	public void run() {
+	
+	public void gameSet() {
 		try {
 			while (true) {
 				answer = scan.next();
-				for (int i = 0; i < word.length; i++) {
-					if (word[i].equals(answer)) {
+				for (int i = 0; i < set.length; i++) {
+					if (set[i].equals(answer)) {
 						score += 50;
 						System.out.println(score);
 					} 
 				}
 			}
 		} catch (Exception e) {
+			// TODO: handle exception
 			e.printStackTrace();
 		}
+	}
+
+	public static void main(String[] args) {
+		GameSet gs = new GameSet();
+		gs.run();
 	}
 }
