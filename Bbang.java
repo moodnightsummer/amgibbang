@@ -15,6 +15,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -33,9 +34,9 @@ public class Bbang extends JFrame {
 	int score = 0;
 	JLabel scoreLabel;
 	JLabel imageLabel = new JLabel();
-	MyPanel panel= new MyPanel();
-	int x=0;
-	
+	MyPanel panel = new MyPanel();
+	int x = 0;
+
 	class MyPanel extends JPanel {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
@@ -48,9 +49,9 @@ public class Bbang extends JFrame {
 //			JPanel contentPane=new JPanel();
 			JLabel imageLabel = new JLabel();
 			panel.add(imageLabel);
-			
+
 //			add(contentPane);
-			
+
 //			contentPane = (JPanel) getContentPane();
 //			contentPane.setLayout(null);
 
@@ -62,16 +63,17 @@ public class Bbang extends JFrame {
 			// show it
 			this.setLocationRelativeTo(null);
 			this.setVisible(true);
-			//contentPane.setOpaque(false);
+			// contentPane.setOpaque(false);
 			imageLabel.setOpaque(false);
-			
-			
-			for(int i=x; i<700; i++) {
+			x = 0;
+
+			for (int i = x; i < 700; i++) {
 				Thread.sleep(10);
 				imageLabel.setBounds(x, 500, 200, 200);
 				x++;
 			}
-			
+			System.out.println(x);
+
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -127,7 +129,6 @@ public class Bbang extends JFrame {
 				// TODO Auto-generated method stub
 
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-
 					for (int i = 0; i < 4; i++) {
 						if (jtf.getText().equals(word[setting[i]])) {
 							score += 50;
@@ -135,6 +136,7 @@ public class Bbang extends JFrame {
 							System.out.println(score);
 						}
 					}
+					
 					jtf.setText("");
 				}
 			}
@@ -142,7 +144,7 @@ public class Bbang extends JFrame {
 	}
 
 	public Bbang() {
-		
+
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -158,7 +160,7 @@ public class Bbang extends JFrame {
 		setLocationRelativeTo(null);
 		this.setVisible(true);
 		scoreSet();
-		
+
 		new Thread(new Runnable() {
 
 			@Override
@@ -175,7 +177,6 @@ public class Bbang extends JFrame {
 					panel.add(label[i]);
 
 				}
-				
 
 				try {
 					label[0].setBounds(200, 200, 100, 104);
@@ -187,11 +188,12 @@ public class Bbang extends JFrame {
 					label[3].setBounds(450, 350, 100, 104);
 
 					for (int i = 0; i < label.length; i++) {
-						Thread.sleep(2000);
+						Thread.sleep(300);
 						label[i].setText("");
 					}
 					textFileld();
 					runDora();
+					gameStop(x);
 				} catch (
 
 				Exception e) {
@@ -199,8 +201,6 @@ public class Bbang extends JFrame {
 				}
 			}
 		}).start();
-		
-		
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -218,7 +218,27 @@ public class Bbang extends JFrame {
 		}
 	}
 
+	public void gameStop(int x) {
+		if (x >= 700) {
+			JOptionPane jop = new JOptionPane();
+			int num = jop.showConfirmDialog(null, score + "점 획득!\n다시 하시겠습니까?", "라운드 종료", JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.PLAIN_MESSAGE);
+
+			switch (num) {
+			case 0: {
+				new Bbang();
+				dispose();
+				break;
+			}
+			case 1, 2: {
+				dispose();
+			}
+			default:
+				throw new IllegalArgumentException("Unexpected value: " + num);
+			}
+		}
+	}
+
 	public static void main(String[] args) {
-		Bbang b = new Bbang();
 	}
 }
