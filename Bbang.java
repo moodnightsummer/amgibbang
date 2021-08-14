@@ -6,10 +6,13 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,7 +39,11 @@ public class Bbang extends JFrame {
 	JLabel imageLabel = new JLabel();
 	MyPanel panel = new MyPanel();
 	int x = 0;
-
+	int sens=0;
+	JTextField jtf;
+	
+	
+	
 	class MyPanel extends JPanel {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
@@ -44,38 +51,29 @@ public class Bbang extends JFrame {
 		}
 	}
 
-	public void runDora() {
+	public void runDora(int k) {
 		try {
-//			JPanel contentPane=new JPanel();
 			JLabel imageLabel = new JLabel();
 			panel.add(imageLabel);
-
-//			add(contentPane);
-
-//			contentPane = (JPanel) getContentPane();
-//			contentPane.setLayout(null);
 
 			ImageIcon ii = new ImageIcon(this.getClass().getResource("rundora1.gif"));
 			imageLabel.setIcon(ii);
 			imageLabel.setLayout(null);
-//			contentPane.setBounds(0, 500, 200, 200);
-//			contentPane.add(imageLabel);
-			// show it
+			
 			this.setLocationRelativeTo(null);
 			this.setVisible(true);
-			// contentPane.setOpaque(false);
 			imageLabel.setOpaque(false);
 			x = 0;
 
-			for (int i = x; i < 700; i++) {
+			for (int i = x; x < 700; i++) {
 				Thread.sleep(10);
 				imageLabel.setBounds(x, 500, 200, 200);
-				x++;
+				x=x+k;
+				System.out.println(x);
 			}
-			System.out.println(x);
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 
@@ -95,12 +93,15 @@ public class Bbang extends JFrame {
 	}
 
 	public void textFileld() {
-		JTextField jtf = new JTextField(4);
+		jtf = new JTextField(4);
 		jtf.setLayout(null);
 		panel.add(jtf);
 		jtf.setBounds(300, 600, 100, 50);
 		jtf.setFont(font);
 		jtf.setOpaque(false);
+		jtf.requestFocus();
+
+		
 
 		jtf.addActionListener(new ActionListener() {
 
@@ -127,24 +128,37 @@ public class Bbang extends JFrame {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-
+				int xcore=0;
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					for (int i = 0; i < 4; i++) {
 						if (jtf.getText().equals(word[setting[i]])) {
-							score += 50;
+							xcore = 50;
+							score+=xcore;
 							scoreLabel.setText("점수 : " + score);
 							System.out.println(score);
 						}
 					}
-					
+					if(xcore==0) {
+						if(score==10) {
+							score-=10;
+							xcore=0;
+						}else if(score>20){
+							score-=20;
+							xcore=0;
+						}
+						else {
+							xcore=0;
+						}
+					}
+					scoreLabel.setText("점수 : " + score);
 					jtf.setText("");
 				}
 			}
 		});
 	}
-
-	public Bbang() {
-
+	
+	public Bbang(int sett) {
+		sens=sett;
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -162,7 +176,6 @@ public class Bbang extends JFrame {
 		scoreSet();
 
 		new Thread(new Runnable() {
-
 			@Override
 			public void run() {
 				runSet();
@@ -180,20 +193,21 @@ public class Bbang extends JFrame {
 
 				try {
 					label[0].setBounds(200, 200, 100, 104);
-					Thread.sleep(800);
+					Thread.sleep(800/sett);
 					label[1].setBounds(400, 150, 100, 104);
-					Thread.sleep(800);
+					Thread.sleep(800/sett);
 					label[2].setBounds(280, 400, 100, 104);
-					Thread.sleep(800);
+					Thread.sleep(800/sett);
 					label[3].setBounds(450, 350, 100, 104);
 
 					for (int i = 0; i < label.length; i++) {
-						Thread.sleep(300);
+						Thread.sleep(2000/sett);
 						label[i].setText("");
 					}
 					textFileld();
-					runDora();
-					gameStop(x);
+					
+					runDora(sett);
+					gameStop();
 				} catch (
 
 				Exception e) {
@@ -218,7 +232,7 @@ public class Bbang extends JFrame {
 		}
 	}
 
-	public void gameStop(int x) {
+	public void gameStop() {
 		if (x >= 700) {
 			JOptionPane jop = new JOptionPane();
 			int num = jop.showConfirmDialog(null, score + "점 획득!\n다시 하시겠습니까?", "라운드 종료", JOptionPane.OK_CANCEL_OPTION,
@@ -226,7 +240,7 @@ public class Bbang extends JFrame {
 
 			switch (num) {
 			case 0: {
-				new Bbang();
+				new GameLevel(sens);
 				dispose();
 				break;
 			}

@@ -25,7 +25,8 @@ public class Bbangsz extends JFrame {
 	String word[] = { "금치산자", "사면초가", "구곡간장", "전전반측", "오매불망", "낙화유수", "관포지교", "백아절현", "금란지교", "막역지우", "간담상조", "대기만성",
 			"마부위침", "입신양명", "이효상효", "혼정신성", "백유지효", "망운지정", "괄목상대", "각곡유목", "다기망양", "형설지공", "곡학아세", "세록치부", "부창부수" };
 	ImageIcon ic = new ImageIcon("/Users/jelly/git/amgibbang/bbang/src/bbang/bbang.png");
-	ImageIcon ic2 = new ImageIcon("/Users/jelly/git/amgibbang/bbang/src/bbang/sicbbang.png");
+	ImageIcon ic2 = new ImageIcon("/Users/jelly/git/amgibbang/bbang/src/bbang/sicbbang1.png");
+	ImageIcon ic3 = new ImageIcon("/Users/jelly/git/amgibbang/bbang/src/bbang/score.jpg");
 	Image icback = ic.getImage();
 	JLabel[] label = new JLabel[4];
 	Font font = new Font("netmarble", Font.BOLD, 20);
@@ -34,7 +35,40 @@ public class Bbangsz extends JFrame {
 	JLabel scoreLabel;
 	Font font2 = new Font("netmarble", Font.BOLD, 0);
 	Font font3 = new Font("netmarble", Font.BOLD, 60);
-	JPanel panel2 = new JPanel();
+	int x=0;
+	
+	public void runDora() {
+		try {
+//			JPanel contentPane=new JPanel();
+			JLabel imageLabel = new JLabel();
+			panel.add(imageLabel);
+//			add(contentPane);
+			
+//			contentPane = (JPanel) getContentPane();
+//			contentPane.setLayout(null);
+
+			ImageIcon ii = new ImageIcon(this.getClass().getResource("rundora1.gif"));
+			imageLabel.setIcon(ii);
+			imageLabel.setLayout(null);
+//			contentPane.setBounds(0, 500, 200, 200);
+//			contentPane.add(imageLabel);
+			// show it
+			this.setLocationRelativeTo(null);
+			this.setVisible(true);
+			//contentPane.setOpaque(false);
+			imageLabel.setOpaque(false);
+			
+			
+			for(int i=x; i<700; i++) {
+				Thread.sleep(10);
+				imageLabel.setBounds(x, 500, 200, 200);
+				x++;
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
 
 	class MyPanel extends JPanel {
 		public void paintComponent(Graphics g) {
@@ -47,8 +81,9 @@ public class Bbangsz extends JFrame {
 		JTextField jtf = new JTextField(4);
 		jtf.setLayout(null);
 		jtf.setFont(font3);
-		jtf.setBounds(320, 680, 100, 80);
+		jtf.setBounds(100, 100, 100, 80);
 		jtf.setOpaque(true);
+		
 		panel.add(jtf);
 
 		jtf.addActionListener(new ActionListener() {
@@ -97,24 +132,27 @@ public class Bbangsz extends JFrame {
 		});
 	}
 
+	
 
 	public Bbangsz() {
+		//panel.add(panel2);
+		this.setBounds(0,0,700,700);
+		this.add(panel);
+		
+		this.setVisible(true);
+		
+		this.setTitle("암기빵");
+		this.setResizable(false);
+		setLocationRelativeTo(null);
+	
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				System.exit(0);
 			}
 		});
-		this.add(panel);
-		panel.setLayout(null);
-		this.setBounds(0,0,700,700);
-		this.setVisible(true);
-		this.setTitle("암기빵");
-		this.setResizable(false);
-		setLocationRelativeTo(null);
-		this.setVisible(true);
 		
-		
+
 		
 		new Thread(new Runnable() {
 			public void run() {
@@ -141,10 +179,12 @@ public class Bbangsz extends JFrame {
 					label[3].setBounds(450, 350, 100, 80);
 					
 					for (int i = 0; i < label.length; i++) {
-						//Thread.sleep(800);
+						Thread.sleep(800);
 						label[i].setFont(font2);
+
 					}
-					textFileld();
+					
+					
 					
 				} catch (
 
@@ -153,7 +193,8 @@ public class Bbangsz extends JFrame {
 				}
 			}
 		}).start();
-		
+		textFileld();
+		runDora();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	

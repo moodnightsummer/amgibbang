@@ -40,7 +40,7 @@ public class StartPage extends JFrame {
 		
 		jbtn1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				new Bbang();
+				new GameLevel();
 				dispose();
 			}
 		});
